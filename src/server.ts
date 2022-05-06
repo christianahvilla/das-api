@@ -3,52 +3,47 @@ import express, { Application } from 'express';
 import cors from 'cors';
 
 import config from './config/config';
-import db from './database/connection';
 import authRoutes from './routes/auth.routes';
+import userRoutes from './routes/user.routes';
+import dbInit from './database/init';
 
-class Server{
-    private app: Application;
-    private port: number;
-    private paths = {
-        auth: '/api/auth',
-    }
+class Server {
+  private app: Application;
 
-    constructor(){
-        this.app = express();
-        this.port = config.PORT;
+  private port: number;
 
-        this.dbConnection();
+  private paths = {
+    auth: '/api/auth',
+    users: '/api/users',
+  };
 
-        this.middlewares();
+  constructor() {
+    this.app = express();
+    this.port = config.PORT;
 
-        this.routes();
+    dbInit();
 
-    }
+    this.middlewares();
 
-    async dbConnection(){
-        try {
-            await db.authenticate();
-            console.log('DB Online');
-        } catch (error: any) {
-            throw new Error(error);
-        }
-    }
+    this.routes();
+  }
 
-    middlewares(){
-        this.app.use(cors());
-        this.app.use(express.json());
-    }
+  middlewares() {
+    this.app.use(cors());
+    this.app.use(express.json());
+  }
 
-    routes(){
-        this.app.use(this.paths.auth, authRoutes);
-    }
+  routes() {
+    this.app.use(this.paths.auth, authRoutes);
+    this.app.use(this.paths.users, userRoutes);
+  }
 
-    listen(){
-        this.app.listen(this.port, () => {
-            console.log('Servidor corriendo en el puerto: ', this.port);
-        })
-    }
-
+  listen() {
+    this.app.listen(this.port, () => {
+      // eslint-disable-next-line no-console
+      console.log('Servidor corriendo en el puerto: ', this.port);
+    });
+  }
 }
 
 export default Server;

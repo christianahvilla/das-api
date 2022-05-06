@@ -1,17 +1,24 @@
 import { Router, Request, Response } from 'express';
-import {login} from '../controllers/auth.controller'
+import { check } from 'express-validator';
+import login from '../controllers/auth.controller';
+import fieldsValidation from '../middlewares/fieldsValidator';
 
 const router = Router();
 
-router.post('/login', (req: Request, res: Response) => {
-    //  TODO: Middlewares to validate data
-    const loginData = req.body;
-    login(loginData);
+router.post('/login', [
+  check('email', 'Is not a valid email').isEmail(),
+  check('password', 'Is not a valid Password').notEmpty(),
+  fieldsValidation,
+], async (req: Request, res: Response) => {
+  const { email, password } = req.body;
 
-    res.status(200).json({
-        msg: 'Testing /login'
-    })
-})
+  try {
+    const data = await login(email, password);
 
+    res.status(200).json(data);
+  } catch (error: any) {
+    res.status(400).json({ msg: error.message });
+  }
+});
 
 export default router;
