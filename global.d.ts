@@ -1,3 +1,7 @@
+/*
+    This file is to set the .env variables
+    visible and the editor can autocomplete them
+*/
 namespace NodeJS {
     interface ProcessEnv{
         NODE_ENV: string;

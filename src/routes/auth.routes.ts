@@ -9,7 +9,7 @@ router.post('/login', (req: Request, res: Response) => {
     login(loginData);
 
     res.status(200).json({
-        msg: 'Si funciona we'
+        msg: 'Testing /login'
     })
 })
 

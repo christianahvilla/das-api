@@ -3,6 +3,7 @@ import dotenv from "dotenv";
 
 dotenv.config({ path: path.resolve(__dirname, "../config/config.env") });
 
+//  Declare both interfaces to use them only in this file
 interface ENV {
     NODE_ENV: string | undefined;
     PORT: number | undefined;
@@ -21,6 +22,7 @@ interface Config {
     DB_PASSWORD: string;
 }
 
+//  Get config only can return data of ENV (interface) type
 const getConfig = (): ENV => {
     return {
         NODE_ENV: process.env.NODE_ENV,
@@ -32,11 +34,16 @@ const getConfig = (): ENV => {
     };
 };
 
+/*
+    If some variable is not defined in the .env file, this file is
+    going to show an error in the application
+    this ensure that all the env variables are declared
+*/
 const getSanitzedConfig = (config: ENV): Config => {
     console.log(process.env.NODE_ENV)
     for (const [key, value] of Object.entries(config)) {
         if (value === undefined) {
-        throw new Error(`Missing key ${key} in config.env`);
+            throw new Error(`Missing key ${key} in config.env`);
         }
     }
     return config as Config;
