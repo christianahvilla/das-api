@@ -14,7 +14,7 @@ const login = async (email: string, password: string) => {
     if (!validPassword) {
       throw new Error('Invalid Credentials');
     }
-    const token = await generateJWT(user.id);
+    const token: any = await generateJWT(user.id);
 
     return {
       user: user.email,

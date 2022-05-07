@@ -1,8 +1,7 @@
 import { Router, Request, Response } from 'express';
 import { check } from 'express-validator';
-
 import fieldsValidation from '../middlewares/fieldsValidator';
-import { create } from '../controllers/user.controller';
+import create from '../controllers/user.controller';
 
 const router = Router();
 

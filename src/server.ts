@@ -5,6 +5,7 @@ import cors from 'cors';
 import config from './config/config';
 import authRoutes from './routes/auth.routes';
 import userRoutes from './routes/user.routes';
+import eventRoutes from './routes/event.routes';
 import dbInit from './database/init';
 
 class Server {
@@ -15,6 +16,7 @@ class Server {
   private paths = {
     auth: '/api/auth',
     users: '/api/users',
+    events: '/api/events',
   };
 
   constructor() {
@@ -36,6 +38,7 @@ class Server {
   routes() {
     this.app.use(this.paths.auth, authRoutes);
     this.app.use(this.paths.users, userRoutes);
+    this.app.use(this.paths.events, eventRoutes);
   }
 
   listen() {
