@@ -34,9 +34,19 @@ const getById = async (idEvent: string): Promise<EventOutput> => {
   return event;
 };
 
+const deleteById = async (idEvent: string): Promise<boolean> => {
+  const event = await Event.findByPk(idEvent);
+  if (!event) {
+    throw new Error(`The event with the id ${idEvent} already exists`);
+  }
+  const deletedEvent = await Event.destroy({ where: { id: idEvent } });
+  return !!deletedEvent;
+};
+
 export {
   create,
   update,
   index,
   getById,
+  deleteById,
 };
