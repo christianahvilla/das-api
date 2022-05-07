@@ -4,6 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
+    "dev": "nodemon ./dist/app.js",
+    "compile": "tsc",
     "start": "node ./dist/app.js",
     "test": "jest"
   },

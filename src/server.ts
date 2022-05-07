@@ -1,23 +1,46 @@
 import express, { Application } from 'express';
+
 import cors from 'cors';
+
+import config from './config/config';
+import db from './database/connection';
+import authRoutes from './routes/auth.routes';
 
 class Server{
     private app: Application;
-    private port: string;
+    private port: number;
     private paths = {
-
+        auth: '/api/auth',
     }
 
     constructor(){
         this.app = express();
-        this.port = process.env.PORT || '9000';
+        this.port = config.PORT;
 
-        //  TODO: DBConnection
+        this.dbConnection();
 
-        //  TODO: Middlewares
+        this.middlewares();
 
-        //  TODO: Routes
+        this.routes();
 
+    }
+
+    async dbConnection(){
+        try {
+            await db.authenticate();
+            console.log('DB Online');
+        } catch (error: any) {
+            throw new Error(error);
+        }
+    }
+
+    middlewares(){
+        this.app.use(cors());
+        this.app.use(express.json());
+    }
+
+    routes(){
+        this.app.use(this.paths.auth, authRoutes);
     }
 
     listen(){
