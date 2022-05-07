@@ -12,8 +12,16 @@ const create = async (payload: EventInput): Promise<EventOutput> => {
   return dataValues;
 };
 
-const update = () => {
-
+const update = async (idEvent: string, payload: Partial<EventInput>): Promise<EventOutput> => {
+  const event = await Event.findByPk(idEvent);
+  if (!event) {
+    throw new Error(`The event with the id ${payload.id} already exists`);
+  }
+  const { dataValues } = await (event as Event).update(payload);
+  if (!dataValues) {
+    throw new Error('Something goes wrong creating the new event!');
+  }
+  return dataValues;
 };
 
 export {
