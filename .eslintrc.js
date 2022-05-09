@@ -8,6 +8,6 @@ module.exports = {
   },
   "rules": {
         // windows linebreaks when not in production environment
-        "linebreak-style": ["error", "unix" ]
+        "linebreak-style": ["error", "windows" ]
     }
 };
