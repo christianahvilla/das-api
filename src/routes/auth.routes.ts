@@ -13,9 +13,9 @@ router.post('/login', [
   const { email, password } = req.body;
 
   try {
-    const data = await login(email, password);
+    const { token, user } = await login(email, password);
 
-    res.status(200).json(data);
+    res.status(200).header('auth-token', token).json(user);
   } catch (error: any) {
     res.status(400).json({ msg: error.message });
   }
