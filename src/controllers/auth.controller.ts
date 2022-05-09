@@ -20,11 +20,9 @@ const login = async (email: string, password: string) => {
       role: user.role,
       name: user.name,
       last_name: user.last_name,
-    };
-    return {
-      data,
       token,
     };
+    return data;
   } catch (error: any) {
     throw new Error(error.message);
   }
