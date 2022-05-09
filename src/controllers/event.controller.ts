@@ -15,7 +15,7 @@ const create = async (payload: EventInput): Promise<EventOutput> => {
 const update = async (idEvent: string, payload: Partial<EventInput>): Promise<EventOutput> => {
   const event = await Event.findByPk(idEvent);
   if (!event) {
-    throw new Error(`The event with the id ${payload.id} already exists`);
+    throw new Error(`The event with the id ${idEvent} already exists`);
   }
   const updatedEvent = await (event as Event).update(payload);
   if (!updatedEvent) {
@@ -26,8 +26,17 @@ const update = async (idEvent: string, payload: Partial<EventInput>): Promise<Ev
 
 const index = async (): Promise<EventOutput[]> => Event.findAll();
 
+const getById = async (idEvent: string): Promise<EventOutput> => {
+  const event = await Event.findByPk(idEvent);
+  if (!event) {
+    throw new Error(`The event with the id ${idEvent} already exists`);
+  }
+  return event;
+};
+
 export {
   create,
   update,
   index,
+  getById,
 };
