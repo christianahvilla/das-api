@@ -5,11 +5,11 @@ const create = async (payload: EventInput): Promise<EventOutput> => {
   if (eventExists) {
     throw new Error(`The event with the id ${payload.id} already exists`);
   }
-  const { dataValues } = await Event.create(payload);
-  if (!dataValues) {
+  const event = await Event.create(payload);
+  if (!event) {
     throw new Error('Something goes wrong creating the new event!');
   }
-  return dataValues;
+  return event;
 };
 
 const update = async (idEvent: string, payload: Partial<EventInput>): Promise<EventOutput> => {
@@ -17,14 +17,17 @@ const update = async (idEvent: string, payload: Partial<EventInput>): Promise<Ev
   if (!event) {
     throw new Error(`The event with the id ${payload.id} already exists`);
   }
-  const { dataValues } = await (event as Event).update(payload);
-  if (!dataValues) {
+  const updatedEvent = await (event as Event).update(payload);
+  if (!updatedEvent) {
     throw new Error('Something goes wrong creating the new event!');
   }
-  return dataValues;
+  return updatedEvent;
 };
+
+const index = async (): Promise<EventOutput[]> => Event.findAll();
 
 export {
   create,
   update,
+  index,
 };

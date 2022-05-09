@@ -43,8 +43,6 @@ class Event extends Model<EventAttributes, EventInput> implements EventAttribute
   public readonly updatedAt!: Date;
 
   public readonly deletedAt!: Date;
-
-  dataValues: any;
 }
 
 Event.init(

@@ -1,6 +1,6 @@
 import { Router, Request, Response } from 'express';
 import { check } from 'express-validator';
-import { create, update } from '../controllers/event.controller';
+import { create, update, index } from '../controllers/event.controller';
 import fieldsValidation from '../middlewares/fieldsValidator';
 import JWTValidate from '../middlewares/jwtValidator';
 
@@ -48,6 +48,17 @@ router.put('/:id', [
     const idEvent = req.params.id;
     const event = await update(idEvent, req.body);
     res.status(200).json(event);
+  } catch (error: any) {
+    res.status(400).json({ msg: error.message });
+  }
+});
+
+router.get('/', [
+  JWTValidate,
+], async (req: Request, res: Response) => {
+  try {
+    const events = await index();
+    res.status(200).json(events);
   } catch (error: any) {
     res.status(400).json({ msg: error.message });
   }
