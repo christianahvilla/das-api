@@ -1,7 +1,7 @@
 import { Router, Request, Response } from 'express';
 import { check } from 'express-validator';
 import {
-  create, update, index, getById,
+  create, update, index, getById, deleteById,
 } from '../controllers/event.controller';
 import fieldsValidation from '../middlewares/fieldsValidator';
 import JWTValidate from '../middlewares/jwtValidator';
@@ -74,6 +74,20 @@ router.get('/:id', [
   try {
     const idEvent = req.params.id;
     const event = await getById(idEvent);
+    res.status(200).json(event);
+  } catch (error: any) {
+    res.status(400).json({ msg: error.message });
+  }
+});
+
+router.delete('/:id', [
+  JWTValidate,
+  check('id', 'Is not a valid id').isLength({ min: 6, max: 36 }),
+  fieldsValidation,
+], async (req: Request, res: Response) => {
+  try {
+    const idEvent = req.params.id;
+    const event = await deleteById(idEvent);
     res.status(200).json(event);
   } catch (error: any) {
     res.status(400).json({ msg: error.message });
